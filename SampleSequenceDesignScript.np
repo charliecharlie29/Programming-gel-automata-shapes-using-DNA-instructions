@@ -1,0 +1,214 @@
+# Differences ==================
+# Design system 6 and 7 sequences using 8bp primary toehold
+# System 6 and 7 use equi-ATCG
+# 5N spacers for both
+
+
+# Physical Model Parameters ==================
+material = dna		# Choose DNA or RNA
+temperature = 25.0	# Default = 37 C
+magnesium = 0.0125	# [0.0,0.2] Molar
+sodium = 0.05		# [0.05,1.1] Molar
+dangles = some		# Values: none, some(default), all
+
+
+# Specify a Domain: from 5' to 3' ==================
+# New domains
+# System 6 domains
+domain aS6 = N8
+domain bS6 = N18
+domain xS6 = N3
+domain yS6 = N3
+domain S6H1Loop = N8
+domain RonS6H1 = N15
+domain RonS6H2 = N15
+domain S6_Sp_5N = N5
+
+# System 7 domains
+domain aS7 = N8
+domain bS7 = N18
+domain xS7 = N3
+domain yS7 = N3
+domain S7H1Loop = N8
+domain RonS7H1 = N15
+domain RonS7H2 = N15
+domain S7_Sp_5N = N5
+
+# Designed Against Sequences
+# System 1 domains
+domain aS1 = AACTTA
+domain bS1 = CGTGCAGGTGCCACAGCG
+domain xS1 = TGG
+domain yS1 = CAA
+domain H1Loop = CACCCA
+domain H1TermLoop = TAGACT
+domain H2TermLoop = GCCTAG
+domain RonH1 = ATGATTGTGTATAGT
+domain RonH2 = AGTTAAGAGAATGAT
+domain S1_Sp_5T = TTTTT
+
+# System 2 domains
+domain aS2 = AGACAG
+domain bS2 = CGCAACGGAGTGGTAGGC
+domain xS2 = TTT
+domain yS2 = ATT
+domain Q1Loop = GAACCT
+domain Q1TermLoop = TCAAGC
+domain Q2TermLoop = AATCGT
+domain RonQ1 = GTAAGGTAAGATAGG
+domain RonQ2 = GGGTAGTGTGATGTG
+domain S2_Sp_5N = CTAAG
+
+# System 3 domains
+domain aS3 = AGTTCC
+domain bS3 = TCGCTTGGACGACTGCCG
+domain xS3 = TAT
+domain yS3 = ATC
+domain J1Loop = TACGGC
+domain J1TermLoop = CTGAGT
+domain J2TermLoop = CAGATC
+domain RonJ1 = GAGATGAGTGTGATA
+domain RonJ2 = GTAGTTGAAGATAGA
+domain S3_Sp_5N = TACAC
+
+# System 5 domains
+domain aS5 = CTATCTAT
+domain bS5 = GTAAGGTGAGGGTGATGG
+domain xS5 = TAA
+domain yS5 = GGT
+domain S5H1Loop = TTGTAGAT
+domain RonS5H1 = GGTAGGTGAATGGGA
+domain RonS5H2 = TATGAGTGAGTTAGG
+domain S5_Sp_5T = TTTTT
+
+
+# Specify an on-target complex. ==================
+# System 6 sequences
+complex AstrandSys6 = aS6* bS6*
+complex RstrandSys6 = yS6 bS6 xS6
+complex S6H1R = xS6* bS6* S6H1Loop S6_Sp_5N bS6 aS6 RonS6H1
+complex S6H2R = RonS6H2 S6H1Loop* bS6 S6_Sp_5N aS6* bS6* yS6*
+complex RevS6H1 = RonS6H1* aS6* bS6*
+complex RevS6H2 = bS6* S6H1Loop RonS6H2*
+
+# System 7 sequences
+complex AstrandSys7 = aS7* bS7*
+complex RstrandSys7 = yS7 bS7 xS7
+complex S7H1R = xS7* bS7* S7H1Loop S7_Sp_5N bS7 aS7 RonS7H1
+complex S7H2R = RonS7H2 S7H1Loop* bS7 S7_Sp_5N aS7* bS7* yS7*
+complex RevS7H1 = RonS7H1* aS7* bS7*
+complex RevS7H2 = bS7* S7H1Loop RonS7H2*
+
+
+# Designed Against Sequences
+# System 1 sequences
+complex AstrandSys1 = aS1* bS1*
+complex RstrandSys1 = yS1 bS1 xS1
+complex H1R = xS1* bS1* H1Loop S1_Sp_5T bS1 aS1 RonH1
+complex H2R = RonH2 H1Loop* bS1 S1_Sp_5T aS1* bS1* yS1*
+complex RevH1 = RonH1* aS1* bS1*
+complex RevH2 = bS1* H1Loop RonH2*
+
+# System 2 sequences
+complex AstrandSys2 = aS2* bS2*
+complex RstrandSys2 = yS2 bS2 xS2
+complex Q1R = xS2* bS2* Q1Loop S2_Sp_5N bS2 aS2 RonQ1
+complex Q2R = RonQ2 Q1Loop* bS2 S2_Sp_5N aS2* bS2* yS2*
+complex RevQ1= RonQ1* aS2* bS2*
+complex RevQ2 = bS2* Q1Loop RonQ2*
+
+# System 3 Sequences
+complex AstrandSys3 = aS3* bS3*
+complex RstrandSys3 = yS3 bS3 xS3
+complex J1R = xS3* bS3* J1Loop S3_Sp_5N bS3 aS3 RonJ1
+complex J2R = RonJ2 J1Loop* bS3 S3_Sp_5N aS3* bS3* yS3*
+complex RevJ1 = RonJ1* aS3* bS3*
+complex RevJ2 = bS3* J1Loop RonJ2*
+
+# System 5 sequences
+complex AstrandSys5 = aS5* bS5*
+complex RstrandSys5 = yS5 bS5 xS5
+complex S5H1R = xS5* bS5* S5H1Loop S5_Sp_5T bS5 aS5 RonS5H1
+complex S5H2R = RonS5H2 S5H1Loop* bS5 S5_Sp_5T aS5* bS5* yS5*
+complex RevS5H1 = RonS5H1* aS5* bS5*
+complex RevS5H2 = bS5* S5H1Loop RonS5H2*
+
+
+# component structures using DU+ notation ==================
+# System 6 sequences
+# 5 T Spacers
+AstrandSys6.structure = U8 U18
+RstrandSys6.structure = U3 U18 U3
+S6H1R.structure = U3 D18 U13 U8 U15
+S6H2R.structure = U15 U8 D18 U13 U3
+RevS6H1.structure = U15 U8 U18
+RevS6H2.structure = U18 U8 U15
+
+# System 7 sequences
+# 5 T Spacers
+AstrandSys7.structure = U8 U18
+RstrandSys7.structure = U3 U18 U3
+S7H1R.structure = U3 D18 U13 U8 U15
+S7H2R.structure = U15 U8 D18 U13 U3
+RevS7H1.structure = U15 U8 U18
+RevS7H2.structure = U18 U8 U15
+
+# Design Against These Sequences
+# System 1 sequences
+# 5 T Spacers
+AstrandSys1.structure = U6 U18
+RstrandSys1.structure = U3 U18 U3
+H1R.structure = U3 D18 U11 U6 U15
+H2R.structure = U15 U6 D18 U11 U3
+RevH1.structure = U15 U6 U18
+RevH2.structure = U18 U6 U15
+
+# System 2 sequences
+# 5 N Spacers
+AstrandSys2.structure = U6 U18
+RstrandSys2.structure = U3 U18 U3
+Q1R.structure = U3 D18 U11 U6 U15
+Q2R.structure = U15 U6 D18 U11 U3
+RevQ1.structure = U15 U6 U18
+RevQ2.structure = U18 U6 U15
+
+# System 3 sequences
+# 5 N Spacers
+AstrandSys3.structure = U6 U18
+RstrandSys3.structure = U3 U18 U3
+J1R.structure = U3 D18 U11 U6 U15
+J2R.structure = U15 U6 D18 U11 U3
+RevJ1.structure = U15 U6 U18
+RevJ2.structure = U18 U6 U15
+
+# System 5 sequences
+# 5 T Spacers
+AstrandSys5.structure = U8 U18
+RstrandSys5.structure = U3 U18 U3
+S5H1R.structure = U3 D18 U13 U8 U15
+S5H2R.structure = U15 U8 D18 U13 U3
+RevS5H1.structure = U15 U8 U18
+RevS5H2.structure = U18 U8 U15
+
+
+# Specify a test tube. =================
+tube sys6HP = S6H1R S6H2R
+tube sys7HP = S7H1R S7H2R
+tube sys6Rev = RevS6H1 RevS6H1
+tube sys7Rev = RevS7H1 RevS7H1
+tube tubeAllHP = H1R H2R Q1R Q2R J1R J2R S5H1R S5H2R S6H1R S6H2R S7H1R S7H2R
+tube tubeAllRev = RevH1 RevH2 RevQ1 RevQ2 RevJ1 RevJ2 RevS6H1 RevS6H1 RevS7H1 RevS7H1
+
+sys6HP.offtargets = {maxsize = 2}
+sys7HP.offtargets = {maxsize = 2}
+sys6Rev.offtargets = {maxsize = 2}
+sys7Rev.offtargets = {maxsize = 2}
+tubeAllHP.offtargets = {maxsize = 2}
+tubeAllRev.offtargets = {maxsize = 2}
+
+# Pattern prevention. =================
+prevent aS6, bS6, xS6, yS6, S6H1Loop, RonS6H1, RonS6H2, aS7, bS7, xS7, yS7, S7H1Loop, RonS7H1, RonS7H2, S6_Sp_5N, S7_Sp_5N = WWWW, AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY
+
+
+# Specify the stop condition. =================
+stop = 0.05
