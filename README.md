@@ -6,3 +6,6 @@
 * The CNN model for output scoring could be found in `CNN-Model`
 * The numeric simulation for simulating the outputs of gel automata could be found in `Gel-Automata-Sim`
 * The genetic algorithm for optimizing gel automata designs could be found in `Genetic-Algorithm`
+
+## Project Goal
+The goal of the project is to build a simulation platform for our hydrogel automata and use such platform to develop an in-silico optimization platform in desiging hydrogel automata of different purposes.
