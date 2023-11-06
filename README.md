@@ -1,6 +1,6 @@
 # Hydrogel-Automata-Directed-By-DNA-Codes
 
-## Description
+## File Description
 * The `.np` nupack file for activator sequence design could be found in `Sequence-Design`
 * The imaging software for controlling the pi-imager could be found in `Imaging-Software`
 * The CNN model for output scoring could be found in `CNN-Model`
@@ -9,3 +9,17 @@
 
 ## Project Goal
 The goal of the project is to build a simulation platform for our hydrogel automata and use such platform to develop an in-silico optimization platform in desiging hydrogel automata of different purposes.
+
+Here, we sought to design a hydrogel automata capable to shifting into the shapes of different digits upon different hydrogel automata activation programs. To automate the evaluation of hydrogel automata outputs, we need a computational model capable of recognizing whether the outputs of hydrogel automata resembles the shape of a digit or not, and which digits does it resembles when it is digit-like.
+
+We first trained a convolutional neural network (CNN) with MNIST dataset to develop a computational model capable of recognizing a digit-like shape. This model is our baseline model, which is a sequential model built with the TensorFlow Keras library (version 2.4.3), with an input layer (handles input images of 28 by 28 pixels), followed by 2 convolutional layers (with 30 and 15 filters) with 2D max-pooling layers following each convolutional layer, and three fully connected layers (with 128, 50, and 10 nodes). The relu activation is used in all layers except for the final classification layer, where the softmax function is used. We used the adam optimizer with categorical cross-entropy loss function and trained for 40 epochs.
+The baseline model was then deployed into the genetic algorithm to optimize and search for ideal hydrogel automata designs. However, as the images of the simulated hydrogel automata outputs differed from the MNIST dataset, the baseline model mislabeled many of the automata outputs into incorrect classes. There were also many cases that the automata outputs resembled no digits, instead looked like “random squiggles.” 
+
+To account for the data difference of the MNIST dataset and the simulated hydrogel automata outputs, we sought to modify the dataset for training the CNN, so that the model could learn from a dataset containing more information about the actual use cases (simulated hydrogel automata outputs). To ensure that we had a dataset large enough for meaningful neural network training purposes, we built a combinatory dataset by combining the MNIST dataset with a dataset generated through the hydrogel automata output simulation (later referred to as the hydrogel automata dataset.) The hydrogel automata dataset is a dataset containing roughly 28 thousand human labeled images. The images within the hydrogel automata dataset were generated through simulating the outputs of a large batch of random hydrogel strip designs.
+
+The outputs were saved as 28-by-28 pixel greyscale images, so that they match the shape and format of the images from the MNIST dataset.  The images were then labeled by hand, assigning each of them to the class based on which digit the shape resembles. 
+Class 0 contained images with shapes resembling digit 0, class 1 corresponded to shapes resembling digit 1, and so on. As the hydrogel strip would often “mis-fold” into shapes resembling no digits, we created an additional class – class 10 (referred to as, random squiggles), containing images that did not resemble any numerical digits.
+
+Using this method, we created and labeled approximately 28,000 images, allocating 24,000 for training and around 4,000 for testing. In our creation of new classes and images, we aimed to preserve a balanced number of images within each class in the final combinatory dataset. This ensured a higher proportion of random squiggles within the generated hydrogel strip dataset compared to the digit images. We then merged this dataset with the MNIST dataset, resulting in a combinatory dataset large enough for neural network training. The combinatory dataset was then used to train the next convolutional neural network. The new CNN, shares the same structure with the baseline model, is a sequential model built with the TensorFlow Keras library (version 2.4.3), with an input layer (handles input images of 28 by 28 pixels), followed by 2 convolutional layers (with30 and 15 filters) with 2D max-pooling layers following each convolutional layer, and three fully connected layers (with 128, 50, and 10 nodes). The relu activation is used in all layers except for the final classification layer, where the softmax function is used. We used the adam optimizer with categorical cross-entropy loss function and trained for 40 epochs. After conducting model training over 40 epochs, we utilized the testing dataset to evaluate the model accuracy, and achieved an accuracy rate of approximately 98.02%.
+
+
