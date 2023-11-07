@@ -41,7 +41,7 @@ The algorithm started with an initial population of automata designs generated f
 
 We next developed a custom loss function to evaluate the performance of each design. We defined the loss function as such:
 
-$Loss = 5000 * (NumberOfDigitsFormed) * \sum_{I = 0}^{I = 9}[1.001 - (ScoreForDigitI)]$
+$Loss = 5000 * (NumberOfDigitsFormed) * \sum_{I = 0 ... 9}[1.001 - (ScoreForDigitI)]$
 
 The loss function computed the **diversity** and the **similarity to real digits** for the digits formed. Designs that outputs images resembling a larger number of high-quality digits would be more likely to be preserved. During the selection stage, we eliminated 80% of the designs within the population, by selecting the designs that have the 20% lowest loss score. These designs were sent into a mutation function to repopulate a new generation.
 
