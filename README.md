@@ -1,4 +1,4 @@
-# Hydrogel-Automata-Directed-By-DNA-Codes
+# Programming-gel-automata-shapes-using-DNA-instructions
 
 ## File Description
 * The `.np` nupack file for activator sequence design could be found in `Sequence-Design`
