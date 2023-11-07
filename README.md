@@ -3,23 +3,36 @@
 ## File Description
 * The `.np` nupack file for activator sequence design could be found in `Sequence-Design`
 * The imaging software for controlling the pi-imager could be found in `Imaging-Software`
-* The CNN model for output scoring could be found in `CNN-Model`
+* The CNN model for output scoring could be found in `Model-Training`
 * The numeric simulation for simulating the outputs of gel automata could be found in `Gel-Automata-Sim`
 * The genetic algorithm for optimizing gel automata designs could be found in `Genetic-Algorithm`
 
-## Project Goal
-The goal of the project is to build a simulation platform for our hydrogel automata and use such platform to develop an in-silico optimization platform in desiging hydrogel automata of different purposes.
+## Project Description
 
-Here, we sought to design a hydrogel automata capable to shifting into the shapes of different digits upon different hydrogel automata activation programs. To automate the evaluation of hydrogel automata outputs, we need a computational model capable of recognizing whether the outputs of hydrogel automata resembles the shape of a digit or not, and which digits does it resembles when it is digit-like.
+### Gel-Automata-Sim
+#### Summary:
 
-We first trained a convolutional neural network (CNN) with MNIST dataset to develop a computational model capable of recognizing a digit-like shape. This model is our baseline model, which is a sequential model built with the TensorFlow Keras library (version 2.4.3), with an input layer (handles input images of 28 by 28 pixels), followed by 2 convolutional layers (with 30 and 15 filters) with 2D max-pooling layers following each convolutional layer, and three fully connected layers (with 128, 50, and 10 nodes). The relu activation is used in all layers except for the final classification layer, where the softmax function is used. We used the adam optimizer with categorical cross-entropy loss function and trained for 40 epochs.
-The baseline model was then deployed into the genetic algorithm to optimize and search for ideal hydrogel automata designs. However, as the images of the simulated hydrogel automata outputs differed from the MNIST dataset, the baseline model mislabeled many of the automata outputs into incorrect classes. There were also many cases that the automata outputs resembled no digits, instead looked like “random squiggles.” 
+Using data from the swelling characterization of bilayer DNA-co-polymerized hydrogel, we developed numeric simulation that accurately predicts the geometric outputs of the strip automata. 
 
-To account for the data difference of the MNIST dataset and the simulated hydrogel automata outputs, we sought to modify the dataset for training the CNN, so that the model could learn from a dataset containing more information about the actual use cases (simulated hydrogel automata outputs). To ensure that we had a dataset large enough for meaningful neural network training purposes, we built a combinatory dataset by combining the MNIST dataset with a dataset generated through the hydrogel automata output simulation (later referred to as the hydrogel automata dataset.) The hydrogel automata dataset is a dataset containing roughly 28 thousand human labeled images. The images within the hydrogel automata dataset were generated through simulating the outputs of a large batch of random hydrogel strip designs.
+We characterized the radius of curvature of bilayer gels upon different actuation combination along with the change in contour length. The values are stored in callable RoC tables and contour length tables that are used to retrieve values during geometric output simulation. 
 
-The outputs were saved as 28-by-28 pixel greyscale images, so that they match the shape and format of the images from the MNIST dataset.  The images were then labeled by hand, assigning each of them to the class based on which digit the shape resembles. 
-Class 0 contained images with shapes resembling digit 0, class 1 corresponded to shapes resembling digit 1, and so on. As the hydrogel strip would often “mis-fold” into shapes resembling no digits, we created an additional class – class 10 (referred to as, random squiggles), containing images that did not resemble any numerical digits.
+We assumed the stack of bilayer gels do not interfere with each other upon actuation given the orthogonal operating actuators and also ignoring the minimal shear stress during swelling. 
 
-Using this method, we created and labeled approximately 28,000 images, allocating 24,000 for training and around 4,000 for testing. In our creation of new classes and images, we aimed to preserve a balanced number of images within each class in the final combinatory dataset. This ensured a higher proportion of random squiggles within the generated hydrogel strip dataset compared to the digit images. We then merged this dataset with the MNIST dataset, resulting in a combinatory dataset large enough for neural network training. The combinatory dataset was then used to train the next convolutional neural network. The new CNN, shares the same structure with the baseline model, is a sequential model built with the TensorFlow Keras library (version 2.4.3), with an input layer (handles input images of 28 by 28 pixels), followed by 2 convolutional layers (with30 and 15 filters) with 2D max-pooling layers following each convolutional layer, and three fully connected layers (with 128, 50, and 10 nodes). The relu activation is used in all layers except for the final classification layer, where the softmax function is used. We used the adam optimizer with categorical cross-entropy loss function and trained for 40 epochs. After conducting model training over 40 epochs, we utilized the testing dataset to evaluate the model accuracy, and achieved an accuracy rate of approximately 98.02%.
+We start with taking a 1d array `segment_lengths` and a 2d array `identities` as inputs, and generate an strip automata object. The `segment_lengths` array encodes the information of the **length** in each segment. The `identities` encodes the information of the **actuator pattern** in each segment. We then simulate the 16 possible states given our 4 switchable actuator system ($2^{4}=16$), thus every automata object contains 16 output images in the end. Upon simulation, we first retrieve the values for radius of curvature and delta contour length with the callable RoC tables and contour length tables, and obtain a 1d array `rocs` for the radius of curvature of each segments and a 1d array `ctls` for the delta contour length of each segments. We next use these values and integrate over the length and angle to derive the final shape. Starting at (x, y) = (0, 0) and $\theta = 0$, we use `delta = 20um` as a mesh size and an iterator object to generate the next (x, y) point. Points are generated with the following rules:
+
+$\Delta \theta = \frac{delta}{radius-of-curvature}$
+
+$\theta = \theta + \Delta \theta$
+
+$\Delta x = delta \cdot sin(\theta)$
+
+$\Delta y = delta \cdot cos(\theta)$
+
+$x = \theta + \Delta x$
+
+$y = \theta + \Delta y$
+
+The iterator generates new point until reaching segment length limit $(segment\_length \cdot (1 + \Delta contour\_length))$ and goes on generating new points for next segments until all segments are generated. We next compile a 28 x 28 pixel images using the shape of the x, y points and apply Gaussian filters to the final generated images representing the actuator geometric outputs, so the images emulate the shape of MNIST digits prior to training and classification.  
+
 
 
