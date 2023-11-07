@@ -4,11 +4,11 @@ import csv, math, os, time, copy, matplotlib, datetime
 import numpy as np
 import matplotlib.pyplot as plt
 
-from scipy import io as spio
-from scipy.ndimage import gaussian_filter
-from scipy.stats import bernoulli
-
 from math import log10, floor
+
+from scipy import io as spio
+from scipy.stats import bernoulli
+from scipy.ndimage import gaussian_filter
 
 from skimage import transform, exposure
 
