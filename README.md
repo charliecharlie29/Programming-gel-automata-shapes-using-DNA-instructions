@@ -6,6 +6,7 @@
 * The CNN model for output scoring could be found in `Model-Training`
 * The numeric simulation for simulating the outputs of gel automata could be found in `Gel-Automata-Sim`
 * The genetic algorithm for optimizing gel automata designs could be found in `Genetic-Algorithm`
+* The MATLAB code for image analysis could be found in `Hydrogel Image Analysis`
 
 ## Project Summary
 
